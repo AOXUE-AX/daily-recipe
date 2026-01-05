@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>每日吃什么</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <h1>今天吃什么</h1>
+
+<div class="recipe-content">
+    <h2 id="recipe-name"></h2>
+
+    <h3>所需食材</h3>
+    <ul id="ingredients"></ul>
+
+    <h3>做法</h3>
+    <ol id="steps"></ol>
+</div>
+
+    <!-- 这里只保留按钮 -->
+    <button onclick="changeRecipe()">换一个</button>
+    <div class="hint">今天 · 推荐</div>
+  </div>
+
+  <!-- JS 文件只在这里引入 -->
+  <script src="script.js"></script>
+</body>
+</html>
