@@ -10,6 +10,12 @@
   <div class="card">
     <h1>今天吃什么</h1>
 
+    <!--  分类 / 标签：放在标题下面 -->
+    <div class="recipe-meta">
+      <span id="recipe-category"></span>
+      <div id="recipe-tags"></div>
+    </div>
+
 <div class="recipe-content">
     <h2 id="recipe-name"></h2>
 
@@ -20,10 +26,36 @@
     <ol id="steps"></ol>
 </div>
 
+<!-- 自定义菜谱输入窗口 -->
+<div class="recipe-editor">
+  <h2>添加我的菜谱</h2>
+
+  <div class="field">
+    <label>菜名</label>
+    <input id="input-name" type="text" placeholder="例如：番茄炒蛋">
+  </div>
+
+  <div class="field">
+    <label>材料（每行一项）</label>
+    <textarea id="input-ingredients" rows="4"
+      placeholder="番茄 2 个&#10;鸡蛋 3 个&#10;少量盐"></textarea>
+  </div>
+
+  <div class="field">
+    <label>步骤（每行一步）</label>
+    <textarea id="input-steps" rows="5"
+      placeholder="打散鸡蛋&#10;番茄切块&#10;先炒蛋再下番茄"></textarea>
+  </div>
+
+  <button id="save-recipe-btn">保存菜谱</button>
+<div id="editor-hint" class="editor-hint"></div>
+</div>
+
     <!-- 这里只保留按钮 -->
     <button onclick="changeRecipe()">换一个</button>
     <div class="hint">今天 · 推荐</div>
   </div>
+
 
   <!-- JS 文件只在这里引入 -->
   <script src="data.js"></script>

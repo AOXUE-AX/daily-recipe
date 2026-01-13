@@ -21,5 +21,15 @@ function updateHintByDate() {
   }
 }
 
-showTodayRecipe();
+function showTodayRecipe() {
+  const today = new Date();
+  const dayNumber =
+    today.getFullYear() * 10000 +
+    (today.getMonth() + 1) * 100 +
+    today.getDate();
+
+  currentRecipeIndex = dayNumber % recipes.length;
+  renderRecipe(recipes[currentRecipeIndex]);
+}
+
 updateHintByDate();
