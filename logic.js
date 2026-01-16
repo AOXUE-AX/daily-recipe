@@ -118,7 +118,7 @@ function changeRecipe() {
     currentRecipeIndex = newIndex;
     renderRecipe(recipes[currentRecipeIndex]);
   });
-
+}
 
 function handleSaveRecipe() {
   // 1 从页面收集输入（只负责“收”）

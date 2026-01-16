@@ -1,30 +1,172 @@
+/* 重置和基础样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
-  background: #f5f6fa;
+  background:  linear-gradient(
+  135deg,
+    #f3e7c3 0%,   /* 温和浅金 */
+    #6b73ff 100%  /* 稳定偏紫蓝 */
+  );
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* 改为这个 */
+  min-height: 100vh; /* 添加这个 */
   padding: 20px; /* 手机上更合理 */
 }
 
+/* 应用容器 */
+#app {
+  width: 100%;
+  max-width: 420px;
+ min-height: 100vh; /* 添加这个 */
+}
 
+  /* 页面切换 */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* 首页样式 */
+.home {
+  padding: 16px;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(
+    135deg,
+    #f5e6b8,
+    #6366f1,
+    #e6d9ff
+  );
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.avatar {
+  font-size: 20px;
+}
+
+.recipe-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.recipe-card {
+  min-width: 110px;
+  background: #f6f7fb;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.recipe-card .emoji {
+  font-size: 24px;
+}
+
+.recipe-card .name {
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+.recipe-card .time {
+  font-size: 12px;
+  color: #666;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.tag-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.scene-tag {
+  background: #eef0ff;
+  color: #4b5cff;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+.favorite-card {
+  background: #fff6e5;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #5b6cff;
+  color: white;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* 详情页样式 */
 .card {
   width: 100%;
-  max-width: 400px;
   padding: 24px;
-  box-sizing: border-box;
-
   border-radius: 16px;
   background: linear-gradient(
     135deg,
-    #f5e6b8,   /* 柔金 */
-    #6366f1,   /* 靛蓝 */
-    #e6d9ff    /* 浅紫 */
+    #f5e6b8,
+    #6366f1,
+    #e6d9ff
   );
   color: #1f2937;
-
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.back-btn {
+  width: auto !important;
+  background: transparent !important;
+  color: #4f46e5 !important;
+  padding: 8px 0 !important;
+  margin-bottom: 16px !important;
+  font-size: 16px !important;
+}
+
+.card h1 {
+  font-size: 22px;
+  margin-bottom: 8px;
 }
 
 .recipe-meta {
@@ -47,51 +189,28 @@ body {
   background: rgba(255, 255, 255, 0.6);
 }
 
-
-h1 {
-  font-size: 22px;
-  margin-bottom: 8px;
-}
-
-h2 {
-  font-size: 18px;
-  margin: 8px 0;
-}
-
-h3 {
+.recipe-content h3 {
   font-size: 16px;
   margin-top: 16px;
 }
 
-ul, ol {
+.recipe-content ul,
+.recipe-content ol {
   padding-left: 20px;
   font-size: 14px;
+  margin-top: 8px;
 }
 
-
+/* 按钮统一样式 */
 button {
   width: 100%;
   margin-top: 20px;
   padding: 12px;
   border: none;
   border-radius: 10px;
-  background: #4f6ef7;
-  color: white;
+  background: #f3e7c3;
+  color: #4a3b1f;
   font-size: 16px;
-}
-
-button {
-  margin-top: 20px;
-  padding: 10px 22px;
-  font-size: 16px;
-
-  /* 常态：淡金色 */
-  background-color: #e6c97a;
-  color: #4b3f2f;
-
-  border: none;
-  border-radius: 8px;
-
   cursor: pointer;
   transition: background-color 0.12s ease,
               transform 0.12s ease,
@@ -100,13 +219,14 @@ button {
 
 /* 鼠标移上去：轻微反馈，不改主色 */
 button:hover {
+  background-color: #ecdca8;
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 /* 点击瞬间：淡粉色 */
 button:active {
-  background-color: #f1c6d3;
+  background-color: #e6cf8f;
   transform: translateY(0);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
 }
@@ -115,9 +235,49 @@ button:active {
   margin-top: 10px;
   font-size: 13px;
   color: rgba(31, 41, 55, 0.6);
-  letter-spacing: 0.5px;
+  text-align: center;
 }
 
+/* ===== 菜谱编辑器（用户输入区） ===== */
+
+.recipe-editor {
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-editor .field {
+  margin-bottom: 20px;
+}
+
+.recipe-editor label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.recipe-editor input,
+.recipe-editor textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.recipe-editor textarea {
+  resize: vertical;
+}
+
+.editor-hint {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #dc2626;
+  text-align: center;
+}
+
+/* 动画效果 */
 .recipe-content {
   opacity: 1;
   transition: opacity 0.18s ease;
@@ -127,16 +287,5 @@ button:active {
   opacity: 0;
 }
 
-/* ===== 菜谱编辑器（用户输入区） ===== */
-
-.recipe-editor {
-  margin-top: 24px;
-}
-
-.editor-hint {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #dc2626; /* 温和的红色 */
-}
 
 

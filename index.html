@@ -7,59 +7,131 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>今天吃什么</h1>
+  <div id="app">
+    <!-- 首页（默认显示） -->
+    <div id="home-page" class="page active">
+      <div class="home">
+        <!-- 顶部栏 -->
+        <div class="top-bar">
+          <input class="search-input" placeholder="搜索菜谱">
+          <div class="avatar">👤</div>
+        </div>
 
-    <!--  分类 / 标签：放在标题下面 -->
-    <div class="recipe-meta">
-      <span id="recipe-category"></span>
-      <div id="recipe-tags"></div>
+        <!-- 今日推荐 -->
+        <section class="section">
+          <h2>今日吃什么？</h2>
+          <div class="subtitle">⭐️ 快速推荐</div>
+
+          <div class="recipe-row">
+            <!-- 修改：添加data-id属性，修正菜名 -->
+            <div class="recipe-card" data-id="tomato-egg-rice">
+              <div class="emoji">🍅</div>
+              <div class="name">番茄鸡蛋盖饭</div> <!-- 改为data.js中的名字 -->
+              <div class="time">15 min</div>
+            </div>
+
+            <div class="recipe-card" data-id="pepper-chicken">
+              <div class="emoji">🍗</div>
+              <div class="name">青椒炒鸡胸</div>
+              <div class="time">20 min</div>
+            </div>
+
+            <!-- 这个菜谱不在data.js中，可以保留或删除 -->
+            <div class="recipe-card">
+              <div class="emoji">🥦</div>
+              <div class="name">蒜蓉西兰</div>
+              <div class="time">8 min</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 场景 -->
+        <section class="section">
+          <h2>按场景选</h2>
+          <div class="tag-row">
+            <span class="scene-tag">🏠 一人食</span>
+            <span class="scene-tag">👥 两人餐</span>
+            <span class="scene-tag">💼 带饭</span>
+            <span class="scene-tag">🎉 聚会</span>
+          </div>
+        </section>
+
+        <!-- 我的常用 -->
+        <section class="section">
+          <h2>我的常用</h2>
+          <div class="favorite-card">
+            <div class="fav-name">番茄炒蛋 ★★★★☆</div>
+            <div class="fav-meta">上次：3 天前</div>
+          </div>
+        </section>
+
+        <!-- 添加按钮 -->
+        <button class="add-btn" id="show-add-btn">＋ 添加我的菜谱</button>
+      </div> <!-- 结束.home -->
+    </div> <!-- 结束#home-page -->
+
+    <!-- 菜谱详情页（默认隐藏） -->
+    <div id="detail-page" class="page">
+      <div class="card">
+        <button class="back-btn" id="back-btn">← 返回</button>
+        
+        <h1>今天吃什么</h1> <!-- 这里保留h1，renderRecipe会设置h2 -->
+
+        <!-- 分类 / 标签 -->
+        <div class="recipe-meta">
+          <span id="recipe-category"></span>
+          <div id="recipe-tags"></div>
+        </div>
+
+        <div class="recipe-content">
+          <h2 id="recipe-name"></h2> <!-- 注意：这里应该是h2，不是h1 -->
+
+          <h3>所需食材</h3>
+          <ul id="ingredients"></ul>
+
+          <h3>做法</h3>
+          <ol id="steps"></ol>
+        </div>
+
+        <!-- 换一个按钮 -->
+        <button onclick="changeRecipe()">换一个</button>
+        <div class="hint">今天 · 推荐</div>
+      </div>
     </div>
 
-<div class="recipe-content">
-    <h2 id="recipe-name"></h2>
+    <!-- 添加菜谱页（默认隐藏） -->
+    <div id="add-page" class="page">
+      <div class="recipe-editor">
+        <button class="back-btn" id="back-from-add-btn">← 返回</button>
+        
+        <h2>添加我的菜谱</h2>
 
-    <h3>所需食材</h3>
-    <ul id="ingredients"></ul>
+        <div class="field">
+          <label>菜名</label>
+          <input id="input-name" type="text" placeholder="例如：番茄炒蛋">
+        </div>
 
-    <h3>做法</h3>
-    <ol id="steps"></ol>
-</div>
+        <div class="field">
+          <label>材料（每行一项）</label>
+          <textarea id="input-ingredients" rows="4"
+            placeholder="番茄 2 个&#10;鸡蛋 3 个&#10;少量盐"></textarea>
+        </div>
 
-<!-- 自定义菜谱输入窗口 -->
-<div class="recipe-editor">
-  <h2>添加我的菜谱</h2>
+        <div class="field">
+          <label>步骤（每行一步）</label>
+          <textarea id="input-steps" rows="5"
+            placeholder="打散鸡蛋&#10;番茄切块&#10;先炒蛋再下番茄"></textarea>
+        </div>
 
-  <div class="field">
-    <label>菜名</label>
-    <input id="input-name" type="text" placeholder="例如：番茄炒蛋">
-  </div>
+        <button id="save-recipe-btn">保存菜谱</button>
+        <div id="editor-hint" class="editor-hint"></div>
+      </div>
+    </div>
+  </div> <!-- 结束#app -->
 
-  <div class="field">
-    <label>材料（每行一项）</label>
-    <textarea id="input-ingredients" rows="4"
-      placeholder="番茄 2 个&#10;鸡蛋 3 个&#10;少量盐"></textarea>
-  </div>
-
-  <div class="field">
-    <label>步骤（每行一步）</label>
-    <textarea id="input-steps" rows="5"
-      placeholder="打散鸡蛋&#10;番茄切块&#10;先炒蛋再下番茄"></textarea>
-  </div>
-
-  <button id="save-recipe-btn">保存菜谱</button>
-<div id="editor-hint" class="editor-hint"></div>
-</div>
-
-    <!-- 这里只保留按钮 -->
-    <button onclick="changeRecipe()">换一个</button>
-    <div class="hint">今天 · 推荐</div>
-  </div>
-
-
-  <!-- JS 文件只在这里引入 -->
+  <!-- JS 文件 -->
   <script src="data.js"></script>
-<script src="logic.js"></script>
-<script src="script.js"></script>
+  <script src="logic.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
