@@ -126,8 +126,17 @@ body {
   background: #fff6e5;
   padding: 12px;
   border-radius: 12px;
+  position: relative;
 }
 
+.fav-enter {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: rgba(0,0,0,0.35);
+}
 .add-btn {
   width: 100%;
   padding: 12px;
@@ -138,6 +147,10 @@ body {
   font-size: 16px;
   margin-top: 20px;
   cursor: pointer;
+}
+button.add-btn {
+  background: #5b6cff;
+  color: #ffffff;
 }
 
 /* 详情页样式 */
@@ -275,6 +288,14 @@ button:active {
   font-size: 14px;
   color: #dc2626;
   text-align: center;
+}
+
+.enter-collection {
+  font-size: 13px;
+  color: #4f46e5;
+  margin-left: 8px;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 /* 动画效果 */

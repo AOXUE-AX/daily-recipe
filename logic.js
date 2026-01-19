@@ -1,5 +1,6 @@
 let currentRecipeIndex = null;
-let userRecipes = [];   // 用户真正的数据来源
+let userRecipes = [];   // 👑 个人菜谱母集（唯一真实来源）
+let currentCollection = "system"; // "system" | "user"
 
 function validateRecipeForUser(recipe) {
   const result = {
@@ -41,6 +42,7 @@ function addUserRecipe(recipe) {
   }
 
   userRecipes.push(recipe);
+  saveUserRecipes();
   return { ok: true };
 }
 
@@ -117,11 +119,27 @@ function renderMyFavorites() {
 
   container.innerHTML = "";
 
+   // 👑 母集标题 + 进入锚点
+
   if (userRecipes.length === 0) {
-    container.innerHTML = `<div class="hint">还没有添加常用菜谱</div>`;
+    container.innerHTML = `
+        <div class="hint">还没有添加常用菜谱</div> 
+        <button class="add-btn" onclick="goToAddPage()">添加一道</button>
+`;
     return;
   }
 
+// 👇 只有在「有个人菜谱」时，才出现“进入母集”的锚点
+const header = document.createElement("div");
+header.className = "favorites-header";
+header.innerHTML = `
+  <div class="favorites-title">我的菜谱</div>
+  <div class="favorites-enter">进入 ›</div>
+`;
+header.addEventListener("click", goToUserRecipeCollection);
+container.appendChild(header);
+
+// 👇 接下来才是每一张 favorite-card
   userRecipes.forEach(recipe => {
     const card = document.createElement("div");
     card.className = "favorite-card";
@@ -129,38 +147,59 @@ function renderMyFavorites() {
     card.innerHTML = `
       <div class="fav-name">${recipe.name}</div>
       <div class="fav-meta">刚刚添加</div>
+      <div class="fav-enter">›</div>
     `;
 
     // 点击 → 进入详情页
-    card.addEventListener("click", () => {
-      // 1. 隐藏所有页面
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      
-      // 2. 显示详情页
-      document.getElementById('detail-page').classList.add('active');
-      
-      // 3. 渲染菜谱
-      renderRecipe(recipe);
-    });
+    
+ card.addEventListener("click", () => {
 
+   showDetailWithRecipe(recipe);
+
+ });
     container.appendChild(card);
   });
 } //renderMyFavorites 函数结束
 
+function showDetailWithRecipe(recipe) {
+  // 1. 隐藏所有页面
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  // 2. 显示详情页
+  document.getElementById("detail-page").classList.add("active");
+
+  // 3. 渲染这道菜
+  renderRecipe(recipe);
+  const hint = document.querySelector(".hint");
+  if (hint) {
+    hint.innerText =
+      recipe.source === "user"
+        ? "来自 · 我的菜谱"
+        : "今日 · 推荐";
+  }
+}
+
+function goToAddPage() {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("add-page").classList.add("active");
+}
+
 /*实际切换逻辑*/
 function changeRecipe() {
   withFadeAnimation(() => {
-    if (recipes.length === 0) return;
-
-    let newIndex;
-    do {
-      newIndex = Math.floor(Math.random() * recipes.length);
-    } while (newIndex === currentRecipeIndex && recipes.length > 1);
-
-    currentRecipeIndex = newIndex;
-    renderRecipe(recipes[currentRecipeIndex]);
+   // 当前：换的是「系统推荐菜谱母集」
+     const list = getCurrentCollectionRecipes();
+     if (!Array.isArray(list) || list.length === 0) return;
+ 
+     let newIndex;
+     do {
+       newIndex = Math.floor(Math.random() * list.length);
+     } while (newIndex === currentRecipeIndex && list.length > 1);
+ 
+     currentRecipeIndex = newIndex;
+     renderRecipe(list[currentRecipeIndex]);
   });
 }
 
@@ -179,7 +218,12 @@ function handleSaveRecipe() {
     .map(line => line.trim())
     .filter(Boolean);
 
-  const recipe = { name, ingredients, steps };
+   const recipe = {
+      name,
+      ingredients,
+      steps,
+      source: "user"   // 👑 个人菜谱母集标记
+   };
 
   // 2 把数据交给系统处理
   const result = addUserRecipe(recipe);
@@ -224,13 +268,37 @@ function handleSaveRecipe() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  loadUserRecipes();
   const btn = document.getElementById("save-recipe-btn");
   if (btn) {
     btn.addEventListener("click", handleSaveRecipe);
   }
+
+  const backBtn = document.getElementById("back-btn");
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById("home-page").classList.add("active");
+    });
+  }
+  renderMyFavorites(); // 初始化「我的常用」入口
 });
 
-//删除 showDetailWithRecipe 函数，因为已经不需要了
+ function getCurrentCollectionRecipes() {
+   return currentCollection === "user"
+     ? userRecipes
+     : recipes;
+ }
+
+ function goToUserRecipeCollection() {
+   // 进入「个人菜谱母集」= 首页 + 聚焦我的常用
+  currentCollection = "user";
+   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+   document.getElementById("home-page").classList.add("active");
+ 
+   // 确保母集是最新状态
+   renderMyFavorites();
+ }
 
 /*统一入口（给按钮 / 未来滑动用）*/
 function switchRecipe(source = "button") {
